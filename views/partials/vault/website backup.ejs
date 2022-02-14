@@ -1,0 +1,75 @@
+<!-- Master for 2 column layout -->
+<!-- <div class="col-sm-12 col-xl-6 col-xxl-4 no-gutters"> -->
+<div class="col-sm-12 col-md-6 col-xl-4 col-xxl-3 no-gutters">
+  <div class="container-fluid border m-auto p-2 mb-3">
+    <div class="text-center">
+      <!-- Dynamic URl in a.href  -->
+      <a
+        href="#url"
+        style="text-decoration: solid; color: black"
+        target="_blank"
+      >
+        <!-- Type
+        <% if(typeof type != 'undefined') { %>
+        <h5 class="mb-3 m-2 p-2">Type: Website</h5>
+        <hr />
+        <% } %> -->
+
+        <h5 class="m-2 p-2">G-mail</h5>
+      </a>
+
+      <!-- <h5 class="m-2 p-2">Url: </h5> -->
+    </div>
+
+    <!-- Dynamic email in input.value -->
+    <div class="input-group mb-3">
+      <input
+        id="emailWithId"
+        class="form-control"
+        type="text"
+        value="abc@gmail.com"
+        readonly
+      />
+      <span class="input-group-text p-0 m-0">
+        <button
+          class="btn text-nowrap btn-outline-secondary copy"
+          onclick="copyToClipboard(document.querySelector('#emailWithId').value)"
+        >
+          <i class="bx bx-copy"></i>
+        </button>
+      </span>
+    </div>
+
+    <!-- Dynamic password in input.value -->
+    <div class="input-group mb-3">
+      <input
+        id="passwordWithId"
+        class="form-control"
+        type="password"
+        value="password"
+        readonly
+      />
+      <span class="input-group-text p-0 m-0">
+        <button
+          class="btn text-nowrap btn-outline-secondary"
+          onclick="copyToClipboard(document.querySelector('#passwordWithId').value)"
+        >
+          <i class="bx bx-copy"></i>
+        </button>
+      </span>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <a href="#edit-id"
+        ><button type="button" class="btn btn-light btn-outline-info">
+          Edit
+        </button></a
+      >
+      <a href="#delete-id"
+        ><button type="button" class="btn btn-light btn-outline-danger">
+          Delete
+        </button></a
+      >
+    </div>
+  </div>
+</div>

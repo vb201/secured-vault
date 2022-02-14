@@ -1,0 +1,74 @@
+<!-- Master for 2 column layout -->
+<!-- <div class="col-sm-12 col-xl-6 col-xxl-4 no-gutters"> -->
+  <% if (myVault.length > 0) { myVault.forEach(myVault => { if (myVault.applications.length > 0) {  myVault.applications.forEach(applications => { %>
+<div class="col-sm-12 col-md-6 col-xl-4 col-xxl-3 no-gutters">
+  <div class="container-fluid border m-auto p-2 mb-3">
+    <!-- hidden id -->
+    <input id="id-<%= applications.id %>" type="hidden" value="<%= applications.id %>">
+    
+    <div class="text-center">
+      <!-- Type
+      <% if(typeof type != 'undefined') { %>
+      <h5 class="mb-3 m-2 p-2">Type: Application</h5>
+      <hr />
+      <% } %> -->
+
+      <h5 class="m-2 p-2" id="name-<%= applications.id %>"><%= applications.name %></h5>
+
+      <!-- Dynamic device -->
+      <p class="m-2 p-2 mb-3" id="device-<%= applications.id %>"><%= applications.device %></p>
+    </div>
+
+    <!-- Dynamic email in input.value -->
+    <div class="input-group mb-3">
+      <input
+        id="email-<%= applications.id %>"
+        class="form-control"
+        type="text"
+        value="<%= applications.email %>"
+        readonly
+      />
+      <span class="input-group-text p-0 m-0">
+        <button
+          class="btn text-nowrap btn-outline-secondary copy"
+          onclick="copyToClipboard(document.querySelector('#email-<%= applications.id %>').value)"
+        >
+          <i class="bx bx-copy"></i>
+        </button>
+      </span>
+    </div>
+
+    <!-- Dynamic password in input.value -->
+    <div class="input-group mb-3">
+      <input
+        id="password-<%= applications.id %>"
+        class="form-control"
+        type="password"
+        value="<%= applications.password %>"
+        readonly
+      />
+      <span class="input-group-text p-0 m-0">
+        <button
+          class="btn text-nowrap btn-outline-secondary"
+          onclick="copyToClipboard(document.querySelector('#password-<%= applications.id %>').value)"
+        >
+          <i class="bx bx-copy"></i>
+        </button>
+      </span>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <a href="#edit-<%= applications.id %>"
+        ><button type="button" class="btn btn-light btn-outline-info" onclick="editApplication(document.querySelector('#id-<%= applications.id %>').value)">
+          Edit
+        </button></a
+      >
+      <a href="applications/delete/<%= applications.id %>"
+        ><button type="button" class="btn btn-light btn-outline-danger">
+          Delete
+        </button></a
+      >
+    </div>
+  </div>
+</div>
+<% })  }  })  } %>

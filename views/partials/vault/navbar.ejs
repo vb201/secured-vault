@@ -1,0 +1,25 @@
+<nav class="navbar navbar-expand navbar-light bg-white">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item align-items-center">
+          <% if(type == "Websites" || type == "Applications" || type == "Bank-Cards") { %>
+            <button class="btn btn-light btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#add<%= type %>">
+              <i class="bx bx-plus p-1 m-0">Add <%= type %></i>
+            </button>
+          <% } %>
+        </li>
+      </ul>
+
+      <ul class="navbar-right navbar-nav me-2 me-sm-3 me-md-4">
+        <li class="nav-item align-items-center">
+          <a href="/logout"
+            ><button class="btn btn-light btn-outline-secondary">
+              <i class="bx bx-lock p-1 m-0">Lock</i>
+            </button></a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

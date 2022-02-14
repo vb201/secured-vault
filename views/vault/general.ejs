@@ -1,0 +1,79 @@
+<% include ../partials/vault/sidebar %>
+
+<div class="home_content">
+
+  <!-- nav bar -->
+
+  <% include ../partials/vault/navbar %>
+
+  <div class="overflow-auto vh-100">
+    <div class="row bg-light border rounded-3 p-2 m-2 ">
+      <div class="col-12 bg-white border ">
+        <h2 class="text-center m-2 p-2"><%= type %></h2>
+        <div class="row">
+          <% if( type == "All") { %>
+            <% include ../partials/vault/website %>
+            <% include ../partials/vault/application %>
+            <% include ../partials/vault/bankCard %>
+            
+          <% } else if( type == "Websites") { %>
+            <% include ../partials/vault/website %>
+
+          <% } else if( type == "Applications") { %>
+            <% include ../partials/vault/application %>
+
+          <% } else if( type == "Bank-Cards") { %>
+            <% include ../partials/vault/bankCard %>
+
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if( type == "All"){ %>
+  <!-- Add Modal -->
+  <% include ../partials/vault/modal/addWebsite %>
+  <% include ../partials/vault/modal/addApplication %>
+  <% include ../partials/vault/modal/addBankCard %>
+  
+  <!-- Edit Modal -->
+  <% include ../partials/vault/modal/editWebsite %>
+  <% include ../partials/vault/modal/editApplication %>
+  <% include ../partials/vault/modal/editBankCard %>
+
+  <!-- Scripts -->
+  <script src="../js/editWebsite.js"></script>
+  <script src="../js/editApplication.js"></script>
+  <script src="../js/editBankCard.js"></script>
+
+<% } else if( type == "Websites") { %>
+  <!-- Add Modal -->
+  <% include ../partials/vault/modal/addWebsite %>
+
+  <!-- Edit Modal -->
+  <% include ../partials/vault/modal/editWebsite %>
+  <script src="../js/editWebsite.js"></script>
+
+<% } else if( type == "Applications") { %>
+  <!-- Add Modal -->
+  <% include ../partials/vault/modal/addApplication %>
+
+  <!-- Edit Modal -->
+  <% include ../partials/vault/modal/editApplication %>
+  <script src="../js/editApplication.js"></script>
+
+<% } else if( type == "Bank-Cards") { %>
+  <!-- Add Modal -->
+  <% include ../partials/vault/modal/addBankCard %>
+
+  <!-- Edit Modal -->
+  <% include ../partials/vault/modal/editBankCard %>
+  <script src="../js/editBankCard.js"></script>
+
+<% } %>
+
+<!-- General Scripts -->
+<script src="../js/sidebar.js"></script>
+<script src="../js/clipboard.js"></script>

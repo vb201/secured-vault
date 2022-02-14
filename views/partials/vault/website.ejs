@@ -1,0 +1,88 @@
+<!-- Master for 2 column layout -->
+<!-- <div class="col-sm-12 col-xl-6 col-xxl-4 no-gutters"> -->
+  <% if (myVault.length > 0) { myVault.forEach(myVault => { if (myVault.websites.length > 0) {  myVault.websites.forEach(websites => { %>
+<div class="col-sm-12 col-md-6 col-xl-4 col-xxl-3 no-gutters">
+  <div class="container-fluid border m-auto p-2 mb-3">
+    <!-- hidden id -->
+    <input id="id-<%= websites.id %>" type="hidden" value="<%= websites.id %>">
+    
+    <div class="text-center">
+      <!-- Dynamic URl in a.href  -->
+      <a
+        href="<%= websites.url %>"
+        style="text-decoration: solid; color: black"
+        target="_blank"
+        id="url-<%= websites.id %>"
+      >
+        <!-- Type
+        <% if(typeof type != 'undefined') { %>
+        <h5 class="mb-3 m-2 p-2">Type: Website</h5>
+        <hr />
+        <% } %> -->
+
+        <h5 class="m-2 p-2" id="name-<%= websites.id %>"><%= websites.name %></h5>
+      </a>
+
+      <!-- <h5 class="m-2 p-2">Url: </h5> -->
+    </div>
+    <!-- Dynamic email in input.value -->
+    <div class="input-group mb-3">
+      <input
+        id="email-<%= websites.id %>"
+        class="form-control"
+        type="text"
+        value="<%= websites.email %>"
+        readonly
+      />
+      <span class="input-group-text p-0 m-0">
+        <button
+          class="btn text-nowrap btn-outline-secondary copy"
+          onclick="copyToClipboard(document.querySelector('#email-<%= websites.id %>').value)"
+        >
+          <i class="bx bx-copy"></i>
+        </button>
+      </span>
+    </div>
+
+    <!-- Dynamic password in input.value -->
+    <div class="input-group mb-3">
+      <input
+        id="password-<%= websites.id %>"
+        class="form-control"
+        type="password"
+        value="<%= websites.password %>"
+        readonly
+      />
+      <span class="input-group-text p-0 m-0">
+        <button
+          class="btn text-nowrap btn-outline-secondary"
+          onclick="copyToClipboard(document.querySelector('#password-<%= websites.id %>').value)"
+        >
+          <i class="bx bx-copy"></i>
+        </button>
+      </span>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <a href="#edit/<% websites.id %>">
+        <button  type="button" class="btn btn-light btn-outline-info" onclick="editWebsite(document.querySelector('#id-<%= websites.id %>').value)">
+          Edit 
+        </button>
+        </a>
+          <!-- <button type="button" class="btn btn-light btn-outline-info" data-bs-toggle="modal" data-bs-target="#edit<%= type %>">
+            Edit
+          </button>
+           -->
+
+      
+      <a href="websites/delete/<%= websites.id %>"
+        ><button type="button" class="btn btn-light btn-outline-danger" >
+          Delete
+        </button></a
+      >
+    </div>
+  </div>
+</div>
+<% })  }  })  } %>
+
+
