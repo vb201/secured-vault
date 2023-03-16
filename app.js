@@ -9,6 +9,7 @@ const session = require('express-session');
 const passport = require('passport');
 const mongoStore = require('connect-mongodb-session')(session);
 const compression = require('compression');
+const helmet = require('helmet');
 // const mongoStore = require("connect-mongo");
 
 // Passport config
@@ -25,6 +26,7 @@ const MongoURI = process.env.MONGOURL;
 const ExpressSessionSecret = process.env.EXPRESS_SESSION_SECRET;
 
 const app = express();
+app.use(helmet());
 
 // DB config
 const connectDB = require('./config/db');
@@ -61,8 +63,6 @@ app.use(
   })
 );
 
-console.log('Email ID: ' + process.env.EMAIL_ID);
-console.log('Email Password: ' + process.env.EMAIL_PASSWORD);
 // Must be after express session
 // Passport middleware
 app.use(passport.initialize());
