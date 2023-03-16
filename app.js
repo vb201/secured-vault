@@ -79,6 +79,15 @@ app.use((req, res, next) => {
   next();
 });
 
+// Set up rate limiter: maximum of hundred requests per minute
+let RateLimit = require('express-rate-limit');
+let limiter = RateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 100,
+});
+// Apply rate limiter to all requests
+app.use(limiter);
+
 app.use(compression()); // Compress all routes
 // app.use(logger("dev"));
 app.use(express.json());
@@ -94,6 +103,7 @@ app.use(
   '/bootstrap/js',
   express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js'))
 );
+
 // // custom
 app.use('/img', express.static(path.join(__dirname, '/public/images')));
 app.use('/css', express.static(path.join(__dirname, '/public/stylesheets')));
