@@ -4,28 +4,27 @@ const expressLayouts = require("express-ejs-layouts");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 // const logger = require("morgan");
-const mongoose = require("mongoose");
 const flash = require("connect-flash");
 const session = require("express-session");
 const passport = require("passport");
 const mongoStore = require("connect-mongodb-session")(session);
 // const mongoStore = require("connect-mongo");
-// const dotenv = require("dotenv");
-
-const indexRouter = require("./routes/index");
-const vaultRouter = require("./routes/vault");
-
-const app = express();
 
 // Passport config
 require("./config/passport")(passport);
 // Dotenv config
 require("dotenv").config();
 
-// console.log("ENCRYPTION_KEY: " + process.env.ENCRYPTION_KEY);
-// console.log("MONGOURL: " + process.env.MONGOURL);
-// console.log("Process.env: ");
-// console.log(process.env);
+// Routes
+const indexRouter = require("./routes/index");
+const vaultRouter = require("./routes/vault");
+
+// Constants
+const MongoURI = process.env.MONGOURL;
+const ExpressSessionSecret = process.env.EXPRESS_SESSION_SECRET;
+
+const app = express();
+
 // DB config
 const connectDB = require("./config/db");
 // Connects MongoDB
@@ -33,10 +32,11 @@ connectDB();
 
 // connect-mongodb-session
 const sessionStore = new mongoStore({
-  uri: process.env.MONGOURL,
+  uri: MongoURI,
   collection: "sessions",
   expires: 1000 * 60 * 60, // 1hr in milli sec
 });
+
 // Catch errors
 sessionStore.on("error", function (error) {
   console.log(error);
@@ -50,21 +50,18 @@ app.set("view engine", "ejs");
 // Express session
 app.use(
   session({
-    secret: process.env.EXPRESS_SESSION_SECRET,
+    secret: ExpressSessionSecret,
     resave: true,
     saveUninitialized: true,
     store: sessionStore, // for connect-mongodb-session
     cookie: {
       maxAge: 1000 * 60 * 60,
     },
-    // store: mongoStore.create({
-    //   mongoUrl: MongoURL,
-    //   ttl: 60 * 60,
-    //   collectionName: 'sessions'
-    // })
   })
 );
 
+console.log("Email ID: " + process.env.EMAIL_ID);
+console.log("Email Password: " + process.env.EMAIL_PASSWORD);
 // Must be after express session
 // Passport middleware
 app.use(passport.initialize());

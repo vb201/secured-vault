@@ -1,108 +1,114 @@
 <!-- Master for 2 column layout -->
 <!-- <div class="col-sm-12 col-xl-6 col-xxl-4 no-gutters"> -->
-<% if (myVault.length > 0) { myVault.forEach(myVault => { if
-(myVault.bankCards.length > 0) { myVault.bankCards.forEach(bankCards => { %>
+<% if (myVault.bankCards.length > 0) { myVault.bankCards.forEach(bankCards => {
+%>
 <div class="col-sm-12 col-md-6 col-xl-4 col-xxl-3 no-gutters">
-	<div class="container-fluid border m-auto p-2 mb-3">
-		<!-- hidden id -->
-		<input
-			id="id-<%= bankCards.id %>"
-			type="hidden"
-			value="<%= bankCards.id %>"
-		/>
+  <div class="container-fluid border m-auto p-2 mb-3">
+    <!-- hidden id -->
+    <input
+      id="id-<%= bankCards._id %>"
+      type="hidden"
+      value="<%= bankCards._id %>"
+    />
 
-		<div class="text-center">
-			<!-- Type
+    <div class="text-center">
+      <!-- Type
       <% if(typeof type !='undefined' ) { %>
       <h5 class="mb-3 m-2 p-2">Type: Application</h5>
       <hr />
       <% } %> -->
 
-			<!-- Dynamic Card name -->
-			<h5 class="m-2 p-2" id="name-<%= bankCards.id %>">
-				<%= bankCards.name %>
-			</h5>
-		</div>
-		<!-- Dynamic cc number in input.value -->
-		<div class="input-group mb-3">
-			<!-- <p class="input-group-text">Card Number: </p> -->
-			<input
-				id="cardNumber-<%= bankCards.id %>"
-				class="form-control"
-				type="password"
-				value="<%= bankCards.cardNumber %>"
-				readonly
-			/>
-			<span class="input-group-text p-0 m-0">
-				<button
-					class="btn text-nowrap btn-outline-secondary copy"
-					onclick="copyToClipboard(document.querySelector('#cardNumber-<%= bankCards.id %>').value)"
-				>
-					<i class="bx bx-copy"></i>
-				</button>
-			</span>
-		</div>
+      <!-- Dynamic Card name -->
+      <h5
+        class="m-2 p-2"
+        id="name-<%= bankCards._id %>"
+      >
+        <%= bankCards.name %>
+      </h5>
+    </div>
+    <!-- Dynamic cc number in input.value -->
+    <div class="input-group mb-3">
+      <!-- <p class="input-group-text">Card Number: </p> -->
+      <input
+        id="cardNumber-<%= bankCards._id %>"
+        class="form-control"
+        type="password"
+        value="<%= bankCards.cardNumber %>"
+        readonly
+      />
+      <span class="input-group-text p-0 m-0">
+        <button
+          class="btn text-nowrap btn-outline-secondary copy"
+          onclick="copyToClipboard(document.querySelector('#cardNumber-<%= bankCards._id %>').value)"
+        >
+          <i class="bx bx-copy"></i>
+        </button>
+      </span>
+    </div>
 
-		<!-- Dynamic holder name in input.value -->
-		<div class="input-group mb-3">
-			<input
-				id="holderName-<%= bankCards.id %>"
-				class="form-control w-50"
-				type="text"
-				value="<%= bankCards.holderName %>"
-				readonly
-			/>
-			<span class="input-group-text p-0 m-0">
-				<button
-					class="btn text-nowrap btn-outline-secondary"
-					onclick="copyToClipboard(document.querySelector('#holderName-<%= bankCards.id %>').value)"
-				>
-					<i class="bx bx-copy"></i>
-				</button>
-			</span>
+    <!-- Dynamic holder name in input.value -->
+    <div class="input-group mb-3">
+      <input
+        id="holderName-<%= bankCards._id %>"
+        class="form-control w-50"
+        type="text"
+        value="<%= bankCards.holderName %>"
+        readonly
+      />
+      <span class="input-group-text p-0 m-0">
+        <button
+          class="btn text-nowrap btn-outline-secondary"
+          onclick="copyToClipboard(document.querySelector('#holderName-<%= bankCards._id %>').value)"
+        >
+          <i class="bx bx-copy"></i>
+        </button>
+      </span>
 
-			<input
-				id="expiry-<%= bankCards.id %>"
-				class="form-control w-25"
-				type="text"
-				value="<%= bankCards.expiry %>"
-				readonly
-			/>
-		</div>
-		<div class="input-group mb-3">
-			<input
-				id="cvv-<%= bankCards.id %>"
-				class="form-control w-25"
-				type="password"
-				value="<%= bankCards.cvv %>"
-				readonly
-			/>
-			<span class="input-group-text p-0 m-0">
-				<button
-					class="btn text-nowrap btn-outline-secondary"
-					onclick="copyToClipboard(document.querySelector('#cvv-<%= bankCards.id %>').value)"
-				>
-					<i class="bx bx-copy"></i>
-				</button>
-			</span>
-		</div>
+      <input
+        id="expiry-<%= bankCards._id %>"
+        class="form-control w-25"
+        type="text"
+        value="<%= bankCards.expiry %>"
+        readonly
+      />
+    </div>
+    <div class="input-group mb-3">
+      <input
+        id="cvv-<%= bankCards._id %>"
+        class="form-control w-25"
+        type="password"
+        value="<%= bankCards.cvv %>"
+        readonly
+      />
+      <span class="input-group-text p-0 m-0">
+        <button
+          class="btn text-nowrap btn-outline-secondary"
+          onclick="copyToClipboard(document.querySelector('#cvv-<%= bankCards._id %>').value)"
+        >
+          <i class="bx bx-copy"></i>
+        </button>
+      </span>
+    </div>
 
-		<div class="d-flex justify-content-end">
-			<a href="#edit-<%= bankCards.id %>"
-				><button
-					type="button"
-					class="btn btn-light btn-outline-info"
-					onclick="editBankCards(document.querySelector('#id-<%= bankCards.id %>').value)"
-				>
-					Edit
-				</button></a
-			>
-			<a href="bank-cards/delete/<%= bankCards.id %>"
-				><button type="button" class="btn btn-light btn-outline-danger">
-					Delete
-				</button></a
-			>
-		</div>
-	</div>
+    <div class="d-flex justify-content-end">
+      <a href="#edit-<%= bankCards._id %>"
+        ><button
+          type="button"
+          class="btn btn-light btn-outline-info"
+          onclick="editBankCards(document.querySelector('#id-<%= bankCards._id %>').value)"
+        >
+          Edit
+        </button></a
+      >
+      <a href="bank-cards/delete/<%= bankCards._id %>"
+        ><button
+          type="button"
+          class="btn btn-light btn-outline-danger"
+        >
+          Delete
+        </button></a
+      >
+    </div>
+  </div>
 </div>
-<% }) } }) } %>
+<% }) } %>

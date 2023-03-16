@@ -1,11 +1,16 @@
 <!-- Master for 2 column layout -->
 <!-- <div class="col-sm-12 col-xl-6 col-xxl-4 no-gutters"> -->
-  <% if (myVault.length > 0) { myVault.forEach(myVault => { if (myVault.applications.length > 0) {  myVault.applications.forEach(applications => { %>
+<% if (myVault.applications.length > 0) {
+myVault.applications.forEach(applications => { %>
 <div class="col-sm-12 col-md-6 col-xl-4 col-xxl-3 no-gutters">
   <div class="container-fluid border m-auto p-2 mb-3">
     <!-- hidden id -->
-    <input id="id-<%= applications.id %>" type="hidden" value="<%= applications.id %>">
-    
+    <input
+      id="id-<%= applications.id %>"
+      type="hidden"
+      value="<%= applications.id %>"
+    />
+
     <div class="text-center">
       <!-- Type
       <% if(typeof type != 'undefined') { %>
@@ -13,16 +18,26 @@
       <hr />
       <% } %> -->
 
-      <h5 class="m-2 p-2" id="name-<%= applications.id %>"><%= applications.name %></h5>
+      <h5
+        class="m-2 p-2"
+        id="name-<%= applications._id %>"
+      >
+        <%= applications.name %>
+      </h5>
 
       <!-- Dynamic device -->
-      <p class="m-2 p-2 mb-3" id="device-<%= applications.id %>"><%= applications.device %></p>
+      <p
+        class="m-2 p-2 mb-3"
+        id="device-<%= applications._id %>"
+      >
+        <%= applications.device %>
+      </p>
     </div>
 
     <!-- Dynamic email in input.value -->
     <div class="input-group mb-3">
       <input
-        id="email-<%= applications.id %>"
+        id="email-<%= applications._id %>"
         class="form-control"
         type="text"
         value="<%= applications.email %>"
@@ -41,7 +56,7 @@
     <!-- Dynamic password in input.value -->
     <div class="input-group mb-3">
       <input
-        id="password-<%= applications.id %>"
+        id="password-<%= applications._id %>"
         class="form-control"
         type="password"
         value="<%= applications.password %>"
@@ -56,19 +71,26 @@
         </button>
       </span>
     </div>
-
     <div class="d-flex justify-content-end">
       <a href="#edit-<%= applications.id %>"
-        ><button type="button" class="btn btn-light btn-outline-info" onclick="editApplication(document.querySelector('#id-<%= applications.id %>').value)">
+        ><button
+          type="button"
+          class="btn btn-light btn-outline-info"
+          onclick="editApplication( `<%= applications._id %>`)"
+        >
+          <!-- onclick="editApplication(document.querySelector('#id-<%= applications.id %>').value)" -->
           Edit
         </button></a
       >
-      <a href="applications/delete/<%= applications.id %>"
-        ><button type="button" class="btn btn-light btn-outline-danger">
+      <a href="applications/delete/<%= applications._id %>"
+        ><button
+          type="button"
+          class="btn btn-light btn-outline-danger"
+        >
           Delete
         </button></a
       >
     </div>
   </div>
 </div>
-<% })  }  })  } %>
+<% }) } %>

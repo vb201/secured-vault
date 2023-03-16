@@ -1,146 +1,66 @@
-var express = require("express");
+var express = require('express');
 var router = express.Router();
-const { ensureAuthenticated } = require("../config/authenticate");
-var aes256 = require("aes256");
-const User = require("../models/user");
-const Vault = require("../models/vault");
-const Website = require("../models/website");
-const Application = require("../models/application");
-const BankCard = require("../models/bankCard");
-require("dotenv").config();
-
-const key = process.env.ENCRYPTION_KEY;
-
-var cipher = aes256.createCipher(key);
-
-const getVault = Vault.find({});
-
-// const key = ;
-
-// /* GET users listing. */
-// router.get("/", async (req, res, next) => {
-
-//   Vault.findOne({user: req.user._id,}, (err, vault) => {
-//     // change all vault.websit
-//     vault.websites.forEach((website) => {
-//       website.name = cipher.decrypt(website.name)
-//       website.url = cipher.decrypt(website.url)
-//       website.email = cipher.decrypt(website.email)
-//       website.password = cipher.decrypt(website.password)
-//     })
-//     res.render('test',{
-//       vault,
-//       // user: req.user.name
-//     });
-//   })
-
-// });
-
-// /* GET Master Password page. */
-// router.get("/favourates", ensureAuthenticated, (req, res, next) => {
-//   try {
-//     Vault.find({}, (err, myVault) => {
-//       var css = [
-//         {
-//           uri: "../css/sidebar.css",
-//         },
-//         {
-//           uri: "https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css",
-//         },
-//         {
-//           uri: "../clipboard",
-//         },
-//       ];
-
-//       res.render("vault/favourates", {
-//         title: "MyVault",
-//         type: "None",
-//         // user: req.user,
-//         myVault,
-//         styles: css,
-//       });
-//     })
-//   } catch (error) {
-//     console.log(error)
-//   }
-// });
+const { ensureAuthenticated } = require('../config/authenticate');
+var aes256 = require('aes256');
+const Vault = require('../models/vault');
+const Website = require('../models/website');
+const Application = require('../models/application');
+const BankCard = require('../models/bankCard');
+const ObjectId = require('mongodb').ObjectID;
+require('dotenv').config();
 
 // // Common page
 /* All Entries page */
-router.get("/all-entries", ensureAuthenticated, (req, res, next) => {
+router.get('/all-entries', ensureAuthenticated, (req, res, next) => {
   try {
     Vault.find({ user: req.user._id }, (err, myVault) => {
       var css = [
         {
-          uri: "../css/sidebar.css",
+          uri: '../css/sidebar.css',
         },
         {
-          uri: "https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css",
+          uri: 'https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css',
         },
         {
-          uri: "../clipboard",
+          uri: '../clipboard',
         },
       ];
 
-      // //Decrypt
-      // myVault.websites.forEach((website) => {
-      //   website.name = cipher.decrypt(website.name)
-      //   website.url = cipher.decrypt(website.url)
-      //   website.email = cipher.decrypt(website.email)
-      //   website.password = cipher.decrypt(website.password)
-      // })
-      // //Decrypt
-      // myVault.applications.forEach((application) => {
-      //   application.name = cipher.decrypt(application.name)
-      //   application.device = cipher.decrypt(application.device)
-      //   application.email = cipher.decrypt(application.email)
-      //   application.password = cipher.decrypt(application.password)
-      // })
-      //   //Decrypt
-      //   myVault.bankCards.forEach((bankCard) => {
-      //     bankCard.name = cipher.decrypt(bankCard.name)
-      //     bankCard.cardNumber = cipher.decrypt(bankCard.cardNumber)
-      //     bankCard.holderName = cipher.decrypt(bankCard.holderName)
-      //     bankCard.expiry = cipher.decrypt(bankCard.expiry)
-      //     bankCard.cvv = cipher.decrypt(bankCard.cvv)
-      //   })
+      let cipher = aes256.createCipher(req.user.password);
 
-      myVault.forEach((myVault) => {
-        if (myVault.websites.length > 0) {
-          myVault.websites.forEach((website) => {
-            website.name = cipher.decrypt(website.name);
-            website.url = cipher.decrypt(website.url);
-            website.email = cipher.decrypt(website.email);
-            website.password = cipher.decrypt(website.password);
-          });
-        }
-      });
-      myVault.forEach((myVault) => {
-        if (myVault.applications.length > 0) {
-          myVault.applications.forEach((application) => {
-            application.name = cipher.decrypt(application.name);
-            application.device = cipher.decrypt(application.device);
-            application.email = cipher.decrypt(application.email);
-            application.password = cipher.decrypt(application.password);
-          });
-        }
-      });
-      myVault.forEach((myVault) => {
-        if (myVault.bankCards.length > 0) {
-          myVault.bankCards.forEach((bankCard) => {
-            bankCard.name = cipher.decrypt(bankCard.name);
-            bankCard.cardNumber = cipher.decrypt(bankCard.cardNumber);
-            bankCard.holderName = cipher.decrypt(bankCard.holderName);
-            bankCard.expiry = cipher.decrypt(bankCard.expiry);
-            bankCard.cvv = cipher.decrypt(bankCard.cvv);
-          });
-        }
+      myVault.forEach((vault) => {
+        myVault = vault;
       });
 
-      res.render("vault/general", {
-        title: "Stone Wall",
-        type: "All",
-        // user: req.user,
+      if (myVault.websites.length > 0) {
+        myVault.websites.forEach((website) => {
+          website.name = cipher.decrypt(website.name);
+          website.url = cipher.decrypt(website.url);
+          website.email = cipher.decrypt(website.email);
+          website.password = cipher.decrypt(website.password);
+        });
+      }
+      if (myVault.applications.length > 0) {
+        myVault.applications.forEach((application) => {
+          application.name = cipher.decrypt(application.name);
+          application.device = cipher.decrypt(application.device);
+          application.email = cipher.decrypt(application.email);
+          application.password = cipher.decrypt(application.password);
+        });
+      }
+      if (myVault.bankCards.length > 0) {
+        myVault.bankCards.forEach((bankCard) => {
+          bankCard.name = cipher.decrypt(bankCard.name);
+          bankCard.cardNumber = cipher.decrypt(bankCard.cardNumber);
+          bankCard.holderName = cipher.decrypt(bankCard.holderName);
+          bankCard.expiry = cipher.decrypt(bankCard.expiry);
+          bankCard.cvv = cipher.decrypt(bankCard.cvv);
+        });
+      }
+
+      res.render('vault/general', {
+        title: 'Stone Wall',
+        type: 'All',
         myVault,
         styles: css,
       });
@@ -149,70 +69,44 @@ router.get("/all-entries", ensureAuthenticated, (req, res, next) => {
     console.log(error);
   }
 });
-// Website page backup
-// router.get("/websites", ensureAuthenticated, async (req, res, next) => {
-//   try {
-//     var css = [
-//       {
-//         uri: "../css/sidebar.css",
-//       },
-//       {
-//         uri: "https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css",
-//       },
-//       {
-//         uri: "../clipboard",
-//       },
-//     ];
-
-//     res.render("vault/general", {
-//       title: "MyVault - Websites",
-//       type: "Websites",
-//       // user: req.user,
-//       styles: css,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
 
 // Wesite page
-router.get("/websites", ensureAuthenticated, async (req, res, next) => {
+router.get('/websites', ensureAuthenticated, async (req, res, next) => {
   try {
     Vault.find({ user: req.user._id }, (err, myVault) => {
       var css = [
         {
-          uri: "../css/sidebar.css",
+          uri: '../css/sidebar.css',
         },
         {
-          uri: "https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css",
+          uri: 'https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css',
         },
         {
-          uri: "../clipboard",
+          uri: '../clipboard',
         },
       ];
 
-      // //Decrypt
-      // myVault.websites.forEach((website) => {
-      // website.name = cipher.decrypt(website.name)
-      // website.url = cipher.decrypt(website.url)
-      // website.email = cipher.decrypt(website.email)
-      // website.password = cipher.decrypt(website.password)
-      // })
+      let cipher = aes256.createCipher(req.user.password);
 
-      myVault.forEach((myVault) => {
-        if (myVault.websites.length > 0) {
-          myVault.websites.forEach((website) => {
-            website.name = cipher.decrypt(website.name);
-            website.url = cipher.decrypt(website.url);
-            website.email = cipher.decrypt(website.email);
-            website.password = cipher.decrypt(website.password);
-          });
-        }
+      myVault.forEach((vault) => {
+        myVault = vault;
       });
 
-      res.render("vault/general", {
-        title: "Stone Wall - Websites",
-        type: "Websites",
+      if (myVault.websites.length > 0) {
+        myVault.websites.forEach((website) => {
+          website.name = cipher.decrypt(website.name);
+          website.url = cipher.decrypt(website.url);
+          website.email = cipher.decrypt(website.email);
+          website.password = cipher.decrypt(website.password);
+        });
+      }
+
+      myVault.applications = [];
+      myVault.bankCards = [];
+
+      res.render('vault/general', {
+        title: 'Stone Wall - Websites',
+        type: 'Websites',
         myVault,
         styles: css,
       });
@@ -223,44 +117,42 @@ router.get("/websites", ensureAuthenticated, async (req, res, next) => {
 });
 
 // Application page
-router.get("/applications", ensureAuthenticated, (req, res, next) => {
+router.get('/applications', ensureAuthenticated, (req, res, next) => {
   try {
     Vault.find({ user: req.user._id }, (err, myVault) => {
       var css = [
         {
-          uri: "../css/sidebar.css",
+          uri: '../css/sidebar.css',
         },
         {
-          uri: "https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css",
+          uri: 'https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css',
         },
         {
-          uri: "../clipboard",
+          uri: '../clipboard',
         },
       ];
 
-      //Decrypt
-      // myVault.applications.forEach((application) => {
-      //   application.name = cipher.decrypt(application.name)
-      //   application.device = cipher.decrypt(application.device)
-      //   application.email = cipher.decrypt(application.email)
-      //   application.password = cipher.decrypt(application.password)
-      // })
+      let cipher = aes256.createCipher(req.user.password);
 
-      myVault.forEach((myVault) => {
-        if (myVault.applications.length > 0) {
-          myVault.applications.forEach((application) => {
-            application.name = cipher.decrypt(application.name);
-            application.device = cipher.decrypt(application.device);
-            application.email = cipher.decrypt(application.email);
-            application.password = cipher.decrypt(application.password);
-          });
-        }
+      myVault.forEach((vault) => {
+        myVault = vault;
       });
 
-      res.render("vault/general", {
-        title: "Stone Wall - Application",
-        type: "Applications",
-        // user: req.user,
+      if (myVault.applications.length > 0) {
+        myVault.applications.forEach((application) => {
+          application.name = cipher.decrypt(application.name);
+          application.device = cipher.decrypt(application.device);
+          application.email = cipher.decrypt(application.email);
+          application.password = cipher.decrypt(application.password);
+        });
+      }
+
+      myVault.websites = [];
+      myVault.bankCards = [];
+
+      res.render('vault/general', {
+        title: 'Stone Wall - Application',
+        type: 'Applications',
         myVault,
         styles: css,
       });
@@ -271,47 +163,43 @@ router.get("/applications", ensureAuthenticated, (req, res, next) => {
 });
 
 // Bank Card page
-router.get("/bank-cards", ensureAuthenticated, (req, res, next) => {
+router.get('/bank-cards', ensureAuthenticated, (req, res, next) => {
   try {
     Vault.find({ user: req.user._id }, (err, myVault) => {
       var css = [
         {
-          uri: "../css/sidebar.css",
+          uri: '../css/sidebar.css',
         },
         {
-          uri: "https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css",
+          uri: 'https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css',
         },
         {
-          uri: "../clipboard",
+          uri: '../clipboard',
         },
       ];
 
-      // //Decrypt
-      // myVault.bankCards.forEach((bankCard) => {
-      // bankCard.name = cipher.decrypt(bankCard.name)
-      // bankCard.cardNumber = cipher.decrypt(bankCard.cardNumber)
-      // bankCard.holderName = cipher.decrypt(bankCard.holderName)
-      // bankCard.expiry = cipher.decrypt(bankCard.expiry)
-      // bankCard.cvv = cipher.decrypt(bankCard.cvv)
-      // })
+      let cipher = aes256.createCipher(req.user.password);
 
-      myVault.forEach((myVault) => {
-        if (myVault.bankCards.length > 0) {
-          myVault.bankCards.forEach((bankCard) => {
-            bankCard.name = cipher.decrypt(bankCard.name);
-            bankCard.cardNumber = cipher.decrypt(bankCard.cardNumber);
-            bankCard.holderName = cipher.decrypt(bankCard.holderName);
-            bankCard.expiry = cipher.decrypt(bankCard.expiry);
-            bankCard.cvv = cipher.decrypt(bankCard.cvv);
-          });
-          console.log(myVault);
-        }
+      myVault.forEach((vault) => {
+        myVault = vault;
       });
 
-      res.render("vault/general", {
-        title: "Stone Wall - Bank Card",
-        type: "Bank-Cards",
-        // user: req.user,
+      if (myVault.bankCards.length > 0) {
+        myVault.bankCards.forEach((bankCard) => {
+          bankCard.name = cipher.decrypt(bankCard.name);
+          bankCard.cardNumber = cipher.decrypt(bankCard.cardNumber);
+          bankCard.holderName = cipher.decrypt(bankCard.holderName);
+          bankCard.expiry = cipher.decrypt(bankCard.expiry);
+          bankCard.cvv = cipher.decrypt(bankCard.cvv);
+        });
+      }
+
+      myVault.applications = [];
+      myVault.websites = [];
+
+      res.render('vault/general', {
+        title: 'Stone Wall - Bank Card',
+        type: 'Bank-Cards',
         myVault,
         styles: css,
       });
@@ -325,26 +213,26 @@ router.get("/bank-cards", ensureAuthenticated, (req, res, next) => {
 
 // password generator page
 router.get(
-  "/password-generator",
+  '/password-generator',
   ensureAuthenticated,
   async (req, res, next) => {
     try {
       var css = [
         {
-          uri: "../css/sidebar.css",
+          uri: '../css/sidebar.css',
         },
         {
-          uri: "https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css",
+          uri: 'https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css',
         },
         {
-          uri: "../clipboard",
+          uri: '../clipboard',
         },
       ];
 
-      res.render("vault/passwordGenerator", {
-        title: "Stone Wall - Password Generator",
+      res.render('vault/passwordGenerator', {
+        title: 'Stone Wall - Password Generator',
         styles: css,
-        type: "none",
+        type: 'none',
       });
     } catch (error) {
       console.log(error);
@@ -354,9 +242,11 @@ router.get(
 
 // // All Post methods
 /* POST add website modal user page. */
-router.post("/websites", async (req, res) => {
+router.post('/websites', async (req, res) => {
   const { addWebsiteName, addWebsiteUrl, addWebsiteEmail, addWebsitePassword } =
     req.body;
+
+  let cipher = aes256.createCipher(req.user.password);
 
   const newWebsite = new Website({
     name: cipher.encrypt(addWebsiteName),
@@ -367,7 +257,7 @@ router.post("/websites", async (req, res) => {
 
   await Vault.findOneAndUpdate(
     {
-      user: req.user._id,
+      user: ObjectId(req.user._id),
     },
     {
       $push: {
@@ -376,17 +266,19 @@ router.post("/websites", async (req, res) => {
     }
   );
 
-  res.redirect("websites");
+  res.redirect('websites');
 });
 
 /* POST add application modal user page. */
-router.post("/applications", async (req, res) => {
+router.post('/applications', async (req, res) => {
   const {
     addApplicationName,
     addApplicationDevice,
     addApplicationEmail,
     addApplicationPassword,
   } = req.body;
+
+  let cipher = aes256.createCipher(req.user.password);
 
   const newApplication = new Application({
     name: cipher.encrypt(addApplicationName),
@@ -395,10 +287,9 @@ router.post("/applications", async (req, res) => {
     password: cipher.encrypt(addApplicationPassword),
   });
 
-  console.log(newApplication);
   await Vault.findOneAndUpdate(
     {
-      user: req.user._id,
+      user: ObjectId(req.user._id),
     },
     {
       $push: {
@@ -407,11 +298,11 @@ router.post("/applications", async (req, res) => {
     }
   );
 
-  res.redirect("applications");
+  res.redirect('applications');
 });
 
 /* POST add bank card modal user page. */
-router.post("/bank-cards", async (req, res) => {
+router.post('/bank-cards', async (req, res) => {
   const {
     addBankCardName,
     addBankCardCardNumber,
@@ -419,6 +310,8 @@ router.post("/bank-cards", async (req, res) => {
     addBankCardExpiry,
     addBankCardCVV,
   } = req.body;
+
+  let cipher = aes256.createCipher(req.user.password);
 
   const newBankCard = new BankCard({
     name: cipher.encrypt(addBankCardName),
@@ -430,7 +323,7 @@ router.post("/bank-cards", async (req, res) => {
 
   await Vault.findOneAndUpdate(
     {
-      user: req.user._id,
+      user: ObjectId(req.user._id),
     },
     {
       $push: {
@@ -439,11 +332,12 @@ router.post("/bank-cards", async (req, res) => {
     }
   );
 
-  res.redirect("bank-cards");
+  res.redirect('bank-cards');
 });
 
 // POST edit Website
-router.post("/websites/edit/:id", async (req, res) => {
+router.post('/websites/edit/:id', async (req, res) => {
+  const referer = req.headers.referer;
   const {
     editWebsiteName,
     editWebsiteUrl,
@@ -452,26 +346,29 @@ router.post("/websites/edit/:id", async (req, res) => {
   } = req.body;
   const id = req.params.id;
 
-  const result = await Vault.updateOne(
+  let cipher = aes256.createCipher(req.user.password);
+
+  await Vault.updateOne(
     {
-      websites: {
-        $elemMatch: { _id: id },
-      },
+      user: ObjectId(req.user._id),
+      'websites._id': ObjectId(id),
     },
     {
       $set: {
-        "websites.$.name": cipher.encrypt(editWebsiteName),
-        "websites.$.url": cipher.encrypt(editWebsiteUrl),
-        "websites.$.email": cipher.encrypt(editWebsiteEmail),
-        "websites.$.password": cipher.encrypt(editWebsitePassword),
+        'websites.$.name': cipher.encrypt(editWebsiteName),
+        'websites.$.url': cipher.encrypt(editWebsiteUrl),
+        'websites.$.email': cipher.encrypt(editWebsiteEmail),
+        'websites.$.password': cipher.encrypt(editWebsitePassword),
       },
     }
   );
-  res.redirect("../../websites");
+  // TODO:  Fix this
+  res.redirect(referer || '../../websites');
 });
 
 // POST edit Application
-router.post("/applications/edit/:id", async (req, res) => {
+router.post('/applications/edit/:id', async (req, res) => {
+  const referer = req.headers.referer;
   const {
     editApplicationName,
     editApplicationDevice,
@@ -480,26 +377,29 @@ router.post("/applications/edit/:id", async (req, res) => {
   } = req.body;
   const id = req.params.id;
 
-  const result = await Vault.updateOne(
+  let cipher = aes256.createCipher(req.user.password);
+
+  await Vault.updateOne(
     {
-      applications: {
-        $elemMatch: { _id: id },
-      },
+      user: ObjectId(req.user._id),
+      'applications._id': ObjectId(id),
     },
     {
       $set: {
-        "applications.$.name": cipher.encrypt(editApplicationName),
-        "applications.$.device": cipher.encrypt(editApplicationDevice),
-        "applications.$.email": cipher.encrypt(editApplicationEmail),
-        "applications.$.password": cipher.encrypt(editApplicationPassword),
+        'applications.$.name': cipher.encrypt(editApplicationName),
+        'applications.$.device': cipher.encrypt(editApplicationDevice),
+        'applications.$.email': cipher.encrypt(editApplicationEmail),
+        'applications.$.password': cipher.encrypt(editApplicationPassword),
       },
     }
   );
-  res.redirect("../../applications");
+  // TODO:  Fix this
+  res.redirect(referer || '../../applications');
 });
 
 // POST edit Application
-router.post("/bank-cards/edit/:id", async (req, res) => {
+router.post('/bank-cards/edit/:id', async (req, res) => {
+  const referer = req.headers.referer;
   const {
     editBankCardName,
     editBankCardCardNumber,
@@ -509,86 +409,93 @@ router.post("/bank-cards/edit/:id", async (req, res) => {
   } = req.body;
   const id = req.params.id;
 
-  const result = await Vault.updateOne(
+  let cipher = aes256.createCipher(req.user.password);
+
+  await Vault.updateOne(
     {
-      bankCards: {
-        $elemMatch: { _id: id },
-      },
+      user: ObjectId(req.user._id),
+      'bankCards._id': ObjectId(id),
     },
     {
       $set: {
-        "bankCards.$.name": cipher.encrypt(editBankCardName),
-        "bankCards.$.cardNumber": cipher.encrypt(editBankCardCardNumber),
-        "bankCards.$.holderName": cipher.encrypt(editBankCardHolderName),
-        "bankCards.$.expiry": cipher.encrypt(editBankCardExpiry),
-        "bankCards.$.cvv": cipher.encrypt(editBankCardCVV),
+        'bankCards.$.name': cipher.encrypt(editBankCardName),
+        'bankCards.$.cardNumber': cipher.encrypt(editBankCardCardNumber),
+        'bankCards.$.holderName': cipher.encrypt(editBankCardHolderName),
+        'bankCards.$.expiry': cipher.encrypt(editBankCardExpiry),
+        'bankCards.$.cvv': cipher.encrypt(editBankCardCVV),
       },
     }
   );
-  res.redirect("../../bank-cards");
+  // TODO: Fix this
+  res.redirect(referer || '../../bank-cards');
 });
 
 // Delete Req
-// POST edit Website
-router.get("/websites/delete/:id", async (req, res) => {
+// delete Website
+router.get('/websites/delete/:id', async (req, res) => {
+  const referer = req.headers.referer;
   const id = req.params.id;
 
-  const result = await Vault.updateOne(
-    {
-      websites: {
-        $elemMatch: { _id: id },
+  try {
+    await Vault.findOneAndUpdate(
+      {
+        user: ObjectId(req.user._id),
       },
-    },
-    {
-      $pull: {
-        websites: {
-          _id: id,
+      {
+        $pull: {
+          websites: {
+            _id: ObjectId(id),
+          },
         },
-      },
-    }
-  );
-  res.redirect("../../websites");
+      }
+    );
+  } catch (err) {
+    console.log(err);
+  }
+  res.redirect(referer || '../../websites');
 });
 
-// POST edit Application
-router.get("/applications/delete/:id", async (req, res) => {
+// delete Application
+router.get('/applications/delete/:id', async (req, res) => {
+  const referer = req.headers.referer;
   const id = req.params.id;
 
-  const result = await Vault.updateOne(
-    {
-      applications: {
-        $elemMatch: { _id: id },
+  try {
+    await Vault.findOneAndUpdate(
+      {
+        user: ObjectId(req.user._id),
       },
-    },
-    {
-      $pull: {
-        applications: {
-          _id: id,
+      {
+        $pull: {
+          applications: {
+            _id: ObjectId(id),
+          },
         },
-      },
-    }
-  );
-  res.redirect("../../applications");
+      }
+    );
+  } catch (err) {
+    console.log(err);
+  }
+  res.redirect(referer || '../../applications');
 });
 
-// POST edit Application
-router.get("/bank-cards/delete/:id", async (req, res) => {
+// delete Bank Card
+router.get('/bank-cards/delete/:id', async (req, res) => {
+  const referer = req.headers.referer;
   const id = req.params.id;
 
-  const result = await Vault.updateOne(
+  await Vault.findOneAndUpdate(
     {
-      bankCards: {
-        $elemMatch: { _id: id },
-      },
+      user: ObjectId(req.user._id),
     },
     {
       $pull: {
         bankCards: {
-          _id: id,
+          _id: ObjectId(id),
         },
       },
     }
   );
-  res.redirect("../../bank-cards");
+  res.redirect(referer || '../../bank-cards');
 });
 module.exports = router;
