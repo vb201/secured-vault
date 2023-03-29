@@ -67,11 +67,13 @@ const sendVerificationEmail = (email, id) => {
   // Create a verification link
   const nodeEnv = process.env.NODE_ENV;
 
-  let verificationLink = null;
-  if (nodeEnv === 'development')
-    verificationLink = `http://localhost:3000/verify/${token}`;
-  else if (nodeEnv === 'production')
-    verificationLink = `https://secured-vault.onrender.com/verify/${token}`;
+  // let verificationLink = null;
+  // if (nodeEnv === 'development')
+  //   verificationLink = `http://localhost:3000/verify/${token}`;
+  // else if (nodeEnv === 'production')
+  //   verificationLink = `https://secured-vault.onrender.com/verify/${token}`;
+
+  let verificationLink = `https://secured-vault.onrender.com/verify/${token}`;
 
   // console.log(`Verification link: `, verificationLink);
 
