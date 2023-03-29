@@ -5,8 +5,6 @@ const nodemailer = require('nodemailer');
 const User = require('../models/user');
 const Vault = require('../models/vault');
 
-require('dotenv').config();
-
 const register = (req, res, next) => {
   res.render('login/register', { title: 'Register' });
 };
@@ -69,12 +67,13 @@ const sendVerificationEmail = (email, id) => {
   // Create a verification link
   const nodeEnv = process.env.NODE_ENV;
 
-  let verificationLink;
-  if (nodeEnv == 'production')
+  let verificationLink = null;
+  if (nodeEnv === 'development')
     verificationLink = `https://secured-vault.onrender.com/verify/${token}`;
-  else verificationLink = `http://localhost:3000/verify/${token}`;
+  else if (nodeEnv === 'production')
+    verificationLink = `http://localhost:3000/verify/${token}`;
 
-  console.log(`Verification link: `, verificationLink);
+  // console.log(`Verification link: `, verificationLink);
 
   // Send the verification email
   const mailOptions = {
