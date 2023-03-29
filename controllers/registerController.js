@@ -69,9 +69,9 @@ const sendVerificationEmail = (email, id) => {
 
   let verificationLink = null;
   if (nodeEnv === 'development')
-    verificationLink = `https://secured-vault.onrender.com/verify/${token}`;
-  else if (nodeEnv === 'production')
     verificationLink = `http://localhost:3000/verify/${token}`;
+  else if (nodeEnv === 'production')
+    verificationLink = `https://secured-vault.onrender.com/verify/${token}`;
 
   // console.log(`Verification link: `, verificationLink);
 
